@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:unifind/views/lost_item/lost_item_form_controller.dart';
 import 'package:unifind/views/lost_item/lost_item_page.dart';
+import 'package:unifind/screens/user_profile_screen.dart'; // Importa la pantalla de perfil de usuario
 
 import '../../models/lost_item_model.dart';
-import '../../widgets/lost_item_card.dart'; //
+import '../../widgets/lost_item_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,22 +32,29 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const LostItemForm()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LostItemForm()));
         },
-        backgroundColor:const Color.fromRGBO(129, 40, 75, 1),
-        child: const Icon(Icons.add,
-        color: Colors.white ,
+        backgroundColor: const Color.fromRGBO(129, 40, 75, 1),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
       appBar: AppBar(
         title: const Text('Objetos Reportados'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UserProfileScreen()));
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<List<LostItem>>(
         stream: _loadLostItems(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<LostItem>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<LostItem>> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
